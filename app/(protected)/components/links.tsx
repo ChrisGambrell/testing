@@ -1,3 +1,5 @@
+'use client'
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import {
@@ -19,6 +21,7 @@ import {
 	ChevronRightIcon,
 	FolderIcon,
 	FrameIcon,
+	HomeIcon,
 	LifeBuoyIcon,
 	LucideIcon,
 	MapIcon,
@@ -31,12 +34,14 @@ import {
 	Trash2Icon,
 } from 'lucide-react'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const links: {
 	label: string
 	links: {
 		actions?: { icon: LucideIcon; label: string }[]
-		children?: { href: string; label: string }[]
+		children?: { exact?: boolean; href: string; label: string }[]
+		exact?: boolean
 		defaultOpen?: boolean
 		href: string
 		icon: LucideIcon
@@ -47,48 +52,54 @@ const links: {
 		label: 'Platform',
 		links: [
 			{
-				href: '#',
+				href: '/',
+				icon: HomeIcon,
+				label: 'Home',
+			},
+			{
+				href: '/',
 				icon: SquareTerminalIcon,
 				label: 'Playground',
 				defaultOpen: true,
 				children: [
-					{ href: '#', label: 'History' },
-					{ href: '#', label: 'Starred' },
-					{ href: '#', label: 'Settings' },
+					{ href: '/playground', exact: true, label: 'History' },
+					{ href: '/playground/starred', label: 'Starred' },
+					{ href: '/playground/settings', label: 'Settings' },
 				],
 			},
 			{
-				href: '#',
+				href: '/',
 				icon: BotIcon,
 				label: 'Models',
-				defaultOpen: true,
+				defaultOpen: false,
 				children: [
-					{ href: '#', label: 'Genesis' },
-					{ href: '#', label: 'Explorer' },
-					{ href: '#', label: 'Quantum' },
+					{ href: '/models/genesis', label: 'Genesis' },
+					{ href: '/models/explorer', label: 'Explorer' },
+					{ href: '/models/quantum', label: 'Quantum' },
 				],
 			},
 			{
-				href: '#',
+				href: '/',
 				icon: BookOpenIcon,
 				label: 'Documentation',
-				defaultOpen: true,
+				defaultOpen: false,
 				children: [
-					{ href: '#', label: 'Introduction' },
-					{ href: '#', label: 'Get Started' },
-					{ href: '#', label: 'Tutorials' },
-					{ href: '#', label: 'Changelog' },
+					{ href: '/documentation/introduction', label: 'Introduction' },
+					{ href: '/documentation/get-started', label: 'Get Started' },
+					{ href: '/documentation/tutorials', label: 'Tutorials' },
+					{ href: '/documentation/changelog', label: 'Changelog' },
 				],
 			},
 			{
-				href: '#',
+				href: '/',
 				icon: Settings2Icon,
 				label: 'Settings',
+				defaultOpen: true,
 				children: [
-					{ href: '#', label: 'General' },
-					{ href: '#', label: 'Team' },
-					{ href: '#', label: 'Billing' },
-					{ href: '#', label: 'Limits' },
+					{ href: '/settings', label: 'General' },
+					{ href: '/settings/team', label: 'Team' },
+					{ href: '/settings/billing', label: 'Billing' },
+					{ href: '/settings/limits', label: 'Limits' },
 				],
 			},
 		],
@@ -97,7 +108,7 @@ const links: {
 		label: 'Projects',
 		links: [
 			{
-				href: '#',
+				href: '/projects',
 				label: 'Design Engineering',
 				icon: FrameIcon,
 				actions: [
@@ -107,7 +118,7 @@ const links: {
 				],
 			},
 			{
-				href: '#',
+				href: '/sales',
 				label: 'Sales & Marketing',
 				icon: PieChartIcon,
 				actions: [
@@ -117,7 +128,7 @@ const links: {
 				],
 			},
 			{
-				href: '#',
+				href: '/travel',
 				label: 'Travel',
 				icon: MapIcon,
 				actions: [
@@ -131,6 +142,8 @@ const links: {
 ]
 
 export function Links() {
+	const pathname = usePathname()
+
 	return (
 		<SidebarContent>
 			{links.map((group) => (
@@ -140,7 +153,10 @@ export function Links() {
 						{group.links.map((link) => (
 							<Collapsible key={link.href} asChild defaultOpen={link.defaultOpen}>
 								<SidebarMenuItem>
-									<SidebarMenuButton asChild tooltip={link.label}>
+									<SidebarMenuButton
+										asChild
+										isActive={!link.children && (link.exact ? pathname === link.href : pathname.startsWith(link.href))}
+										tooltip={link.label}>
 										<Link href={link.href}>
 											<link.icon />
 											<span>{link.label}</span>
@@ -158,7 +174,11 @@ export function Links() {
 												<SidebarMenuSub>
 													{link.children?.map((child) => (
 														<SidebarMenuSubItem key={child.label}>
-															<SidebarMenuSubButton asChild>
+															<SidebarMenuSubButton
+																asChild
+																isActive={
+																	child.exact ? pathname === child.href : pathname.startsWith(child.href)
+																}>
 																<Link href={child.href}>{child.label}</Link>
 															</SidebarMenuSubButton>
 														</SidebarMenuSubItem>
@@ -196,13 +216,13 @@ export function Links() {
 					<SidebarMenu>
 						<SidebarMenuItem>
 							<SidebarMenuButton asChild size='sm'>
-								<Link href='#'>
+								<Link href='/'>
 									<LifeBuoyIcon />
 									<span>Support</span>
 								</Link>
 							</SidebarMenuButton>
 							<SidebarMenuButton asChild size='sm'>
-								<Link href='#'>
+								<Link href='/'>
 									<SendIcon />
 									<span>Feedback</span>
 								</Link>
