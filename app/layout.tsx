@@ -5,6 +5,7 @@ import { Suspense } from 'react'
 import './globals.css'
 
 // Import to verify environment variables are set
+import { SidebarProvider } from '@/components/ui/sidebar'
 import '@/lib/env'
 
 const geistSans = localFont({
@@ -31,10 +32,12 @@ export default function RootLayout({
 	return (
 		<html lang='en'>
 			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-				{children}
-				<Suspense>
-					<GlobalToaster />
-				</Suspense>
+				<SidebarProvider>
+					{children}
+					<Suspense>
+						<GlobalToaster />
+					</Suspense>
+				</SidebarProvider>
 			</body>
 		</html>
 	)

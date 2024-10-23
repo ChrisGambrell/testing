@@ -2,7 +2,7 @@ import { CommandIcon } from 'lucide-react'
 
 // TODO: Real app name and icon
 export const MOCK_APP_ICON = CommandIcon
-export const MOCK_APP_NAME = 'Next.js Boilerplate'
+export const MOCK_APP_NAME = 'Acme Inc'
 export const MOCK_APP_DESC = 'A starter template for Next.js'
 
 // TODO: Real terms data
