@@ -43,7 +43,6 @@ export const authConfig = {
 		}),
 		Github({ allowDangerousEmailAccountLinking: true }),
 		Google({ allowDangerousEmailAccountLinking: true }),
-		// FIXME: Need to have better email that's being sent
 		Resend({ from: env.AUTH_RESEND_EMAIL }),
 	],
 	session: { strategy: 'jwt' },
