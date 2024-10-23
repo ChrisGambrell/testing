@@ -14,3 +14,11 @@ export const MOCK_TERMS = {
 	minimumAge: 13,
 	phone: '(555) 123-4567',
 }
+
+// TODO: Real testimonial
+export const MOCK_TESTIMONIAL = {
+	name: 'Sofia Davis',
+	quote: 'This library has saved me countless hours of work and helped me deliver stunning designs to my clients faster than ever before.',
+}
+
+export const PLACEHOLDER_IMAGE = 'https://ui.shadcn.com/placeholder.svg'
