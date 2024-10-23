@@ -1,3 +1,4 @@
+import { logout } from '@/actions/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
 	DropdownMenu,
@@ -74,10 +75,14 @@ export function UserMenu({ user }: { user: AuthUser }) {
 								</DropdownMenuItem>
 							</DropdownMenuGroup>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem>
-								<LogOutIcon />
-								Log out
-							</DropdownMenuItem>
+							<form action={logout}>
+								<DropdownMenuItem asChild>
+									<button className='w-full' type='submit'>
+										<LogOutIcon />
+										Log out
+									</button>
+								</DropdownMenuItem>
+							</form>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				</SidebarMenuItem>
