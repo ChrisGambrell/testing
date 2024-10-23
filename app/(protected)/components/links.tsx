@@ -53,6 +53,7 @@ const links: {
 		links: [
 			{
 				href: '/',
+				exact: true,
 				icon: HomeIcon,
 				label: 'Home',
 			},
@@ -60,7 +61,7 @@ const links: {
 				href: '/',
 				icon: SquareTerminalIcon,
 				label: 'Playground',
-				defaultOpen: true,
+				defaultOpen: false,
 				children: [
 					{ href: '/playground', exact: true, label: 'History' },
 					{ href: '/playground/starred', label: 'Starred' },
