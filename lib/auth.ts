@@ -1,6 +1,13 @@
+import { loginSchema } from '@/validators/auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
+import bcrypt from 'bcryptjs'
 import NextAuth, { NextAuthConfig } from 'next-auth'
+import Credentials from 'next-auth/providers/credentials'
+import Github from 'next-auth/providers/github'
+import Google from 'next-auth/providers/google'
+import Resend from 'next-auth/providers/resend'
 import prisma from './db'
+import { env } from './env'
 import { AuthUser } from './utils'
 
 export const authConfig = {
@@ -20,7 +27,25 @@ export const authConfig = {
 		},
 	},
 	pages: { signIn: '/login' },
-	providers: [],
+	providers: [
+		Credentials({
+			credentials: { email: {}, password: {} },
+			authorize: async (credentials) => {
+				const { email, password } = await loginSchema.parseAsync(credentials)
+				const user = await prisma.user.findUnique({ where: { email } })
+
+				if (!user) throw new Error('User not found')
+				else if (!user.passwordHash) throw new Error('User does not have a password')
+				else if (!(await bcrypt.compare(password, user.passwordHash))) throw new Error('Password does not match')
+
+				return user
+			},
+		}),
+		Github({ allowDangerousEmailAccountLinking: true }),
+		Google({ allowDangerousEmailAccountLinking: true }),
+		// FIXME: Need to have better email that's being sent
+		Resend({ from: env.AUTH_RESEND_EMAIL }),
+	],
 	session: { strategy: 'jwt' },
 } satisfies NextAuthConfig
 

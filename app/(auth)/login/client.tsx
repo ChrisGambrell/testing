@@ -1,13 +1,17 @@
 'use client'
 
+import { login, oauth } from '@/actions/auth'
 import { ActionButton } from '@/components/action-button'
 import { FormInput } from '@/components/form-input'
+import { useFormState } from 'react-dom'
 
 export function ClientPage() {
+	const [state, action] = useFormState(login, null)
+
 	return (
-		<form className='grid gap-4'>
-			<FormInput label='Email address' name='email' placeholder='name@example.com' type='email' />
-			<FormInput label='Password' name='password' type='password' />
+		<form action={action} className='grid gap-4'>
+			<FormInput label='Email address' name='email' placeholder='name@example.com' type='email' error={state?.errors.email} />
+			<FormInput label='Password' name='password' type='password' error={state?.errors.password} />
 			<ActionButton>Sign in with email</ActionButton>
 
 			<div className='relative'>
@@ -20,8 +24,12 @@ export function ClientPage() {
 			</div>
 
 			<div className='grid gap-2'>
-				<ActionButton variant='outline'>Login with Google</ActionButton>
-				<ActionButton variant='outline'>Login with Github</ActionButton>
+				<ActionButton formAction={oauth.bind(null, 'google')} variant='outline'>
+					Login with Google
+				</ActionButton>
+				<ActionButton formAction={oauth.bind(null, 'github')} variant='outline'>
+					Login with Github
+				</ActionButton>
 			</div>
 		</form>
 	)
