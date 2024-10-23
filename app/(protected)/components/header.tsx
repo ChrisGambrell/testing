@@ -26,7 +26,6 @@ export function Header() {
 								</div>
 								<div className='grid flex-1 text-left text-sm leading-tight'>
 									<span className='truncate font-semibold'>{MOCK_APP_NAME}</span>
-									{/* TODO: The actual plan */}
 									<span className='truncate text-xs'>Free</span>
 								</div>
 								<ChevronsUpDownIcon className='ml-auto' />
